@@ -1,6 +1,6 @@
 module.exports = {
-  // interval between requests. 1000 / 2 means 500 max requests per second (per worker) is allowed
-  REQ_DELAY: 2,
+  // interval between requests. 1000 / 1 means 1000 max requests per second (per worker) is allowed
+  REQ_DELAY: 1,
   // concurrent requests adopts based on error rate, but won't exceed the max value
   MAX_CONCURRENT_REQUESTS: 60000,
   // interval between printing stats and calculating error rate
