@@ -23,18 +23,16 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
       console.log(name, '|', 'Req', requests_made, '|', 'Errors last min,%', errRate, '|', 'R', CONCURRENT_REQUESTS)
 
       if (errRate > 90) {
-        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 0.5)
-      } else if (errRate > 80) {
+        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 0.4)
+      } else if (errRate > 75) {
+        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 0.6)
+      } else if (errRate > 60) {
         CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 0.8)
       } else if (errRate < 1) {
-        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 2)
+        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 1.25)
       } else if (errRate < 5) {
-        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 1.5)
+        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 1.15)
       } else if (errRate < 10) {
-        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 1.3)
-      } else if (errRate < 20) {
-        CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 1.2)
-      } else if (errRate < 30) {
         CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 1.05)
       }
       if (CONCURRENT_REQUESTS > MAX_CONCURRENT_REQUESTS) {
