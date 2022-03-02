@@ -31,11 +31,11 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
     lastMinuteOk = 0
     lastMinuteErr = 0
 
-    if (errRate > 80) {
+    if (errRate > 50) {
       CONCURRENT_REQUESTS = Math.floor(rps * 0.5)
-    } else if (errRate > 50) {
-      CONCURRENT_REQUESTS = Math.floor(rps * 0.7)
     } else if (errRate > 20) {
+      CONCURRENT_REQUESTS = Math.floor(rps * 0.8)
+    } else if (errRate > 9) {
       CONCURRENT_REQUESTS = Math.floor(rps * 0.9)
     } else if (errRate < 2) {
       CONCURRENT_REQUESTS = Math.min(Math.floor(rps * 1.05), MAX_CONCURRENT_REQUESTS)
