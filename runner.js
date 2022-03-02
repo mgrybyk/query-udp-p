@@ -17,15 +17,18 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
 
   let errRate = 0
   let requests_made = 0
+  let rps = 0
 
-  const interval = setInterval(() => {
+  setInterval(() => {
     if (failureAttempts === 0) {
-      console.log(name, '|', 'Req', requests_made, '|', 'Errors last min,%', errRate, '|', 'R', CONCURRENT_REQUESTS)
+      console.log(name, '|', 'Req', requests_made, '|', 'Errors last min,%', errRate, '|', 'rps', rps, '|', 'R', CONCURRENT_REQUESTS)
     }
   }, INTERVAL)
 
-  const interval = setInterval(() => {
+  const adaptivenessInterval = 14
+  setInterval(() => {
     if (failureAttempts === 0) {
+      rpc = Math.floor((lastMinuteOk + lastMinuteErr) / adaptivenessInterval)
       if (errRate > 90) {
         CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 0.4)
       } else if (errRate > 75) {
@@ -48,7 +51,7 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
       lastMinuteOk = 0
       lastMinuteErr = 0
     }
-  }, 14000)
+  }, adaptivenessInterval * 1000)
 
   while (true) {
     if (pending < CONCURRENT_REQUESTS) {
