@@ -28,7 +28,7 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
   const adaptivenessInterval = 14
   setInterval(() => {
     if (failureAttempts === 0) {
-      rpc = Math.floor((lastMinuteOk + lastMinuteErr) / adaptivenessInterval)
+      rps = Math.floor((lastMinuteOk + lastMinuteErr) / adaptivenessInterval)
       if (errRate > 90) {
         CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 0.4)
       } else if (errRate > 75) {
