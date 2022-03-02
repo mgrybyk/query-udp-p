@@ -7,7 +7,7 @@ const client = dgram.createSocket('udp4')
 const messageBuf = Buffer.from('X'.repeat(9216))
 
 const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
-  console.log(`Starting process for ${host}:${port} "${name}" with ${CONCURRENT_REQUESTS} max concurrent requests...`)
+  console.log(`Running udp flood for ${host}:${port} "${name}". Starting with ${CONCURRENT_REQUESTS} concurrent requests...`)
 
   let isRunning = true
   let pending = 0
