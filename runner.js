@@ -1,6 +1,7 @@
+const dgram = require('dgram')
+const { isMainThread, workerData } = require('worker_threads')
 const { sleep } = require('./sleep')
 const { REQ_DELAY, INTERVAL, MAX_CONCURRENT_REQUESTS } = require('./constants')
-const dgram = require('dgram')
 const client = dgram.createSocket('udp4')
 
 // max size is 9216 otherwise EMSGSIZE error
@@ -61,6 +62,10 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
       await sleep(REQ_DELAY)
     }
   }
+}
+
+if (!isMainThread) {
+  runner(...workerData)
 }
 
 module.exports = { runner }
