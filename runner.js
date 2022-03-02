@@ -49,9 +49,8 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
   }, INTERVAL)
 
   while (true) {
-    await sleep(REQ_DELAY)
-
     if (pending < CONCURRENT_REQUESTS) {
+      pending++
       client.send(messageBuf, 0, messageBuf.length, port, host, (err) => {
         if (err) {
           lastMinuteErr++
@@ -67,6 +66,8 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
           errRate = Math.floor(100 * (lastMinuteErr / (lastMinuteErr + lastMinuteOk)))
         }
       })
+    } else {
+      await sleep(REQ_DELAY)
     }
   }
 }
