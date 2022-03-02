@@ -21,7 +21,11 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
   const interval = setInterval(() => {
     if (failureAttempts === 0) {
       console.log(name, '|', 'Req', requests_made, '|', 'Errors last min,%', errRate, '|', 'R', CONCURRENT_REQUESTS)
+    }
+  }, INTERVAL)
 
+  const interval = setInterval(() => {
+    if (failureAttempts === 0) {
       if (errRate > 90) {
         CONCURRENT_REQUESTS = Math.floor(CONCURRENT_REQUESTS * 0.4)
       } else if (errRate > 75) {
@@ -44,7 +48,7 @@ const runner = async (host, port, CONCURRENT_REQUESTS, name) => {
       lastMinuteOk = 0
       lastMinuteErr = 0
     }
-  }, INTERVAL)
+  }, 14000)
 
   while (true) {
     if (pending < CONCURRENT_REQUESTS) {
